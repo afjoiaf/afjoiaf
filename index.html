@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>秘密の日記</title>
-    <meta name="robots" content="noindex">
-  </head>
-  <body>
-    <h1>これは秘密の日記サイトです</h1>
-    <p>ようこそ、自分だけの空間へ。</p>
-  </body>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秘密の日記</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 1em;
+      background: #f3f3f3;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 1em;
+      padding: 0.5em;
+    }
+    button {
+      margin-top: 0.5em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      color: gray;
+      margin-bottom: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>秘密の日記</h1>
+  <div class="timestamp" id="saved-time">保存されていません</div>
+  <textarea id="diary" placeholder="ここに今日の気持ちを書いてください..."></textarea><br />
+  <button onclick="saveDiary()">💾 保存する</button>
+
+  <script>
+    const diary = document.getElementById('diary');
+    const timeDisplay = document.getElementById('saved-time');
+
+    // 保存ボタン
+    function saveDiary() {
+      const text = diary.value;
+      const timestamp = new Date().toLocaleString();
+      localStorage.setItem('mySecretDiary', text);
+      localStorage.setItem('mySecretDiaryTime', timestamp);
+      timeDisplay.textContent = `最後の保存: ${timestamp}`;
+      alert("保存しました！");
+    }
+
+    // ページ読み込み時に復元
+    window.onload = function () {
+      const saved = localStorage.getItem('mySecretDiary');
+      const savedTime = localStorage.getItem('mySecretDiaryTime');
+      if (saved) diary.value = saved;
+      if (savedTime) timeDisplay.textContent = `最後の保存: ${savedTime}`;
+    };
+  </script>
+</body>
 </html>
