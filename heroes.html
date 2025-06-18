@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>憧れの人たち</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1em;
+      background: #fffbe7;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1em;
+      margin-top: 1em;
+    }
+    .person {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      border-radius: 8px;
+    }
+    .person img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .person-name {
+      margin-top: 0.5em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟 憧れの人たち</h1>
+  <div class="grid">
+    <div class="person">
+      <img src="images/hero1.jpg" alt="Hero 1">
+      <div class="person-name">ホロライブの◯◯</div>
+    </div>
+    <div class="person">
+      <img src="images/hero2.jpg" alt="Hero 2">
+      <div class="person-name">にじさんじの△△</div>
+    </div>
+    <!-- 必要に応じて追加 -->
+  </div>
+  <p><a href="index.html">← 日記に戻る</a></p>
+</body>
+</html>
