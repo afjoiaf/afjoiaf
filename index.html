@@ -2,62 +2,87 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>秘密の日記</title>
+  <title>秘密日記（振り返り機能付き）</title>
   <meta name="robots" content="noindex" />
   <style>
     body {
       font-family: sans-serif;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
       padding: 1em;
-      background: #f3f3f3;
+      background: #f9f9f9;
     }
     textarea {
       width: 100%;
       height: 200px;
       font-size: 1em;
-      padding: 0.5em;
+      margin-bottom: 0.5em;
     }
     button {
-      margin-top: 0.5em;
+      margin-top: 0.2em;
       padding: 0.5em 1em;
       font-size: 1em;
     }
-    .timestamp {
-      font-size: 0.8em;
-      color: gray;
-      margin-bottom: 0.5em;
+    #history {
+      margin-top: 2em;
+    }
+    .entry {
+      margin-bottom: 1em;
+      padding: 0.5em;
+      background: #fff;
+      border-left: 4px solid #ccc;
+    }
+    .entry-date {
+      font-weight: bold;
+      font-size: 0.9em;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <h1>秘密の日記</h1>
-  <div class="timestamp" id="saved-time">保存されていません</div>
-  <textarea id="diary" placeholder="ここに今日の気持ちを書いてください..."></textarea><br />
-  <button onclick="saveDiary()">💾 保存する</button>
+  <h1>秘密日記 ✍️</h1>
+  <textarea id="diary" placeholder="今日あったことを書いてください..."></textarea><br />
+  <button onclick="saveEntry()">💾 今日の日記を保存</button>
+
+  <div id="history">
+    <h2>🕓 過去の日記</h2>
+    <div id="entries"></div>
+  </div>
 
   <script>
-    const diary = document.getElementById('diary');
-    const timeDisplay = document.getElementById('saved-time');
+    const diary = document.getElementById("diary");
+    const entriesDiv = document.getElementById("entries");
 
-    // 保存ボタン
-    function saveDiary() {
-      const text = diary.value;
-      const timestamp = new Date().toLocaleString();
-      localStorage.setItem('mySecretDiary', text);
-      localStorage.setItem('mySecretDiaryTime', timestamp);
-      timeDisplay.textContent = `最後の保存: ${timestamp}`;
+    // 保存ボタンの処理
+    function saveEntry() {
+      const text = diary.value.trim();
+      if (!text) return alert("何か書いてください！");
+
+      const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
+      const allEntries = JSON.parse(localStorage.getItem("myDiaryEntries") || "{}");
+      allEntries[today] = text;
+      localStorage.setItem("myDiaryEntries", JSON.stringify(allEntries));
       alert("保存しました！");
+      diary.value = "";
+      showEntries();
     }
 
-    // ページ読み込み時に復元
-    window.onload = function () {
-      const saved = localStorage.getItem('mySecretDiary');
-      const savedTime = localStorage.getItem('mySecretDiaryTime');
-      if (saved) diary.value = saved;
-      if (savedTime) timeDisplay.textContent = `最後の保存: ${savedTime}`;
-    };
+    // 過去の日記を表示
+    function showEntries() {
+      entriesDiv.innerHTML = "";
+      const allEntries = JSON.parse(localStorage.getItem("myDiaryEntries") || "{}");
+      const sortedDates = Object.keys(allEntries).sort().reverse(); // 新しい順
+
+      for (const date of sortedDates) {
+        const entry = document.createElement("div");
+        entry.className = "entry";
+        entry.innerHTML = `<div class="entry-date">${date}</div><div>${allEntries[date]}</div>`;
+        entriesDiv.appendChild(entry);
+      }
+    }
+
+    window.onload = showEntries;
   </script>
 </body>
 </html>
+
