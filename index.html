@@ -1,89 +1,23 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>秘密日記（振り返り機能付き）</title>
-  <meta name="robots" content="noindex" />
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 700px;
-      margin: auto;
-      padding: 1em;
-      background: #f9f9f9;
-    }
-    textarea {
-      width: 100%;
-      height: 200px;
-      font-size: 1em;
-      margin-bottom: 0.5em;
-    }
-    button {
-      margin-top: 0.2em;
-      padding: 0.5em 1em;
-      font-size: 1em;
-    }
-    #history {
-      margin-top: 2em;
-    }
-    .entry {
-      margin-bottom: 1em;
-      padding: 0.5em;
-      background: #fff;
-      border-left: 4px solid #ccc;
-    }
-    .entry-date {
-      font-weight: bold;
-      font-size: 0.9em;
-      color: #555;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>LINE WORKS OAuth Redirect</title>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                // アプリにディープリンクで返す
+                window.location.href = `yourapp://callback?code=${code}`;
+            } else {
+                document.body.innerHTML = "<h1>認証失敗</h1>";
+            }
+        }
+    </script>
 </head>
 <body>
-  <p><a href="heroes.html">My heroes</a></p>
-  <h1>秘密日記 ✍️</h1>
-  <textarea id="diary" placeholder="今日あったことを書いてください..."></textarea><br />
-  <button onclick="saveEntry()">💾 今日の日記を保存</button>
-
-  <div id="history">
-    <h2>🕓 過去の日記</h2>
-    <div id="entries"></div>
-  </div>
-
-  <script>
-    const diary = document.getElementById("diary");
-    const entriesDiv = document.getElementById("entries");
-
-    // 保存ボタンの処理
-    function saveEntry() {
-      const text = diary.value.trim();
-      if (!text) return alert("何か書いてください！");
-
-      const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
-      const allEntries = JSON.parse(localStorage.getItem("myDiaryEntries") || "{}");
-      allEntries[today] = text;
-      localStorage.setItem("myDiaryEntries", JSON.stringify(allEntries));
-      alert("保存しました！");
-      diary.value = "";
-      showEntries();
-    }
-
-    // 過去の日記を表示
-    function showEntries() {
-      entriesDiv.innerHTML = "";
-      const allEntries = JSON.parse(localStorage.getItem("myDiaryEntries") || "{}");
-      const sortedDates = Object.keys(allEntries).sort().reverse(); // 新しい順
-
-      for (const date of sortedDates) {
-        const entry = document.createElement("div");
-        entry.className = "entry";
-        entry.innerHTML = `<div class="entry-date">${date}</div><div>${allEntries[date]}</div>`;
-        entriesDiv.appendChild(entry);
-      }
-    }
-
-    window.onload = showEntries;
-  </script>
+    <h1>認証中...</h1>
 </body>
 </html>
-
