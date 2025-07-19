@@ -1,8 +1,51 @@
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0;url=myapp://callback?code=...">
-  </head>
-  <body>
-    Redirecting...
-  </body>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>認証コード取得</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        #code {
+            font-size: 1.5em;
+            margin: 20px;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>認証コード</h1>
+    <p>下のコードをコピーしてアプリに貼り付けてください</p>
+    <div id="code">読み込み中...</div>
+    <button onclick="copyCode()">コピー</button>
+
+    <script>
+        // URLからcodeパラメータを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            document.getElementById('code').textContent = code;
+        } else {
+            document.getElementById('code').textContent = "コードが見つかりません";
+        }
+
+        function copyCode() {
+            if (code) {
+                navigator.clipboard.writeText(code).then(() => {
+                    alert("認証コードをコピーしました");
+                });
+            }
+        }
+    </script>
+</body>
 </html>
